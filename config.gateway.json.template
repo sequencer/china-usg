@@ -1,42 +1,5 @@
 {
-        "firewall": {
-                "group": {
-                        "address-group": {
-                                "chnroutes2": {
-                                        "description": "chnroutes2 IPs"
-                                }
-                        }
-                },
-                "modify": {
-                        "CHNROUTES2": {
-                                "rule": {
-                                        "1001": {
-                                                "action": "modify",
-                                                "destination": {
-                                                        "group": {
-                                                                "address-group": "chnroutes2"
-                                                        }
-                                                },
-                                                "modify": {
-                                                        "table": "9"
-                                                },
-                                                "protocol": "all"
-                                        }
-                                }
-                        }
-                }
-                
-        },
         "interfaces": {
-                "ethernet": {
-                        "eth1": {
-                                "firewall": {
-                                        "in": {
-                                                "modify": "CHNROUTES2"
-                                        }
-                                }
-                        }
-                },
                 "openvpn": {
                         "vtun0": {
                                 "config-file": "/config/openvpn/openvpn.conf"
@@ -46,16 +9,6 @@
         "protocols": {
                 "static": {
                         "interface-route": {
-                                "0.0.0.0/0": {
-                                        "next-hop-interface": {
-                                                "pppoe0": {
-                                                        "distance": "2"
-                                                },
-                                                "vtun0": {
-                                                        "distance": "1"
-                                                }
-                                        }
-                                },
                                 "x.x.x.x/32": {
                                         "next-hop-interface": {
                                                 "pppoe0": {
@@ -67,17 +20,8 @@
                         "route": {
                                 "0.0.0.0/0": {
                                         "next-hop": {
-                                                "x.x.x.x": "''"
-                                        }
-                                }
-                        },
-                        "table": {
-                                "9": {
-                                        "interface-route": {
-                                                "0.0.0.0/0": {
-                                                        "next-hop-interface": {
-                                                                "pppoe0": "''"
-                                                        }
+                                                "x.x.x.x": {
+                                                        "distance": "1"
                                                 }
                                         }
                                 }
@@ -101,11 +45,6 @@
                                 },
                                 "6011": {
                                         "description": "MASQ guest_network to WAN",
-                                        "destination": {
-                                                "group": {
-                                                        "address-group": "chnroutes2"
-                                                }
-                                        },
                                         "log": "disable",
                                         "outbound-interface": "pppoe0",
                                         "protocol": "all",
@@ -118,5 +57,10 @@
                                 }
                         }
                 }
+        },
+        "system": {
+                "name-server": [
+                        "x.x.x.x"
+                ]
         }
 }
